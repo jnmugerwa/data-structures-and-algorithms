@@ -1,2 +1,2 @@
-# data_structures_and_algorithms
+# data-structures-and-algorithms
 Implementations of famous data structures and algorithms.
