@@ -3,4 +3,4 @@ Implementations of widely-useful data structures and algorithms. Will be buildin
 
 Feel free to use any of my code, for any purposes!
 
-!["A collagen network and it's direction field"](misc/network.png)
+!["A network"](misc/network.png)
