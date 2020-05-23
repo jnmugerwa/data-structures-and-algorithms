@@ -44,7 +44,7 @@ public class AStar<V extends Vertex<E>, E extends Edge<V>> implements ShortestPa
 
         boolean endFlag = false;
         PriorityQueue<V> frontier = new PriorityQueue<>((a, b) -> distanceComparator.compare(a, b));
-        HashSet<V> visited = new HashSet<>();
+        Set<V> visited = new HashSet<>();
 
         distMap.put(start, 0.0);
         frontier.add(start);
@@ -88,7 +88,7 @@ public class AStar<V extends Vertex<E>, E extends Edge<V>> implements ShortestPa
             System.out.println("ERROR: No path could be formed.");
             return Collections.emptyList();
         }
-        return new LinkedList<>(getPathHelper(mostRecentEnd));
+        return getPathHelper(mostRecentEnd);
     }
 
     /**
