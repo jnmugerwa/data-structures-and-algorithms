@@ -4,7 +4,7 @@ import java.util.List;
  * A vertex.
  *
  * @param <E> The type of edge that this vertex is associated with.
- * @author Joshua Nathan Mugerwa
+ * @author Joshua Nathan Mugerwa and Kuba Tarlowski
  * @version 1.2
  */
 public interface Vertex<E> {

@@ -2,7 +2,7 @@
  * An edge between two vertices.
  *
  * @param <V> The type of vertex that this edge connects.
- * @author Joshua Nathan Mugerwa
+ * @author Joshua Nathan Mugerwa and Kuba Tarlowski
  * @version 1.1
  */
 public interface Edge<V> {
