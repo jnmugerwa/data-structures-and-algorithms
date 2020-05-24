@@ -41,9 +41,9 @@ class Trie:
             curr = curr.children[letter]
         curr.is_word = True
 
-    def clear(self):
+    def clear(self) -> None:
         """
-        Clears the trie of all nodes (except a new root).
+        Clears the Trie of all nodes (except a new root).
         """
         self.root = _TrieNode()
         self.size = 1
