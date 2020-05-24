@@ -62,6 +62,24 @@ class Trie:
             curr = curr.children[letter]
         return curr.is_word
 
+    def find_regex(self, word: str, root: _TrieNode, start=0) -> bool:
+        """
+        Searches for regex patterns such that '.' can be matched with any character (i.e. m.d
+            Example: 'm.d' can match 'mad', 'mbd', ... , 'mzd'.
+        :param word: A word
+        :param root: The root of the sub-Trie we will search
+        :param start: Where we will try matching from in the original word
+        :return:
+        """
+        curr = root
+        for i in range(start, len(word)):
+            if word[i] == '.':
+                return any(self.find_regex(word, curr.children[letter], i + 1) for letter in curr.children)
+            if word[i] not in curr.children:
+                return False
+            curr = curr.children[word[i]]
+        return curr.is_word
+
     def is_prefix(self, prefix: str) -> bool:
         """
         Searches for a prefix in the Trie.
