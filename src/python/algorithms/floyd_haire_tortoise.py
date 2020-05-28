@@ -2,6 +2,7 @@ class Node:
     """
     A node.
     """
+
     def __init__(self, val=None):
         self.val = val
         self.next = None
@@ -12,7 +13,6 @@ def detect_cycle(head: Node) -> Node:
     Detects a cycle in a linked list, returning the head of the cycle.
     :param head: The starting node of the linked list
     :return: The head of the list's cycle
-
     """
     if not head:
         return None
