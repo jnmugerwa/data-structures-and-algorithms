@@ -31,8 +31,8 @@ class SegmentTree:
         def build(i=0, j=len(nums) - 1) -> _SegmentTreeNode:
             """
             Recursive helper. Splits the array in half at each level, then propagates range sums from leaves.
-            :param l: The left index of the current halve of the array.
-            :param r: The right index of the current halve of the array.
+            :param i: The left index of the current halve of the array.
+            :param j: The right index of the current halve of the array.
             :return: The root of the segment tree.
             """
             if i > j:
@@ -60,9 +60,7 @@ class SegmentTree:
         def recurse(node=self.root) -> int:
             """
             Recursively traverses the tree. Once it finds the node to update it propagates the new range sum upwards.
-            :param root: The root of the subtree we're searching.
-            :param i: The index of the value we're updating.
-            :param val: The value we're updating to.
+            :param node: The root of the subtree we're searching.
             :return: root.total: The total sum of the nodes beneath root.
             """
             if node.start == node.end:  # Base; actual value is stored in leaf, and total is propagated upwards.
@@ -89,7 +87,7 @@ class SegmentTree:
         def _recurse(node=self.root, i=start, j=end) -> int:
             """
             Recursively traverses the tree. Propagates the range sum upwards from the first leaves we encounter.
-            :param root: The root of the subtree we're traversing.
+            :param node: The root of the subtree we're traversing.
             :param i: The start of the range.
             :param j: The end of the range.
             :return: The range-sum of the subtree we're traversing.
