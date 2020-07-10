@@ -3,7 +3,7 @@ class _SegmentTreeNode:
     A node in a Segment Tree.
 
     author: Joshua Nathan Mugerwa
-    version: 6/15/20
+    version: 7/10/20
     """
 
     def __init__(self, start, end):
@@ -19,7 +19,7 @@ class SegmentTree:
     Reference: https://en.wikipedia.org/wiki/Segment_tree
 
     author: Joshua Nathan Mugerwa
-    version: 6/15/20
+    version: 7/10/20
     """
 
     def __init__(self, nums: list[int]) -> None:
@@ -28,27 +28,26 @@ class SegmentTree:
         :param nums: The list of numbers we will compute range-sums over.
         """
 
-        def _build(l=0, r=len(nums) - 1) -> _SegmentTreeNode:
+        def build(i=0, j=len(nums) - 1) -> _SegmentTreeNode:
             """
             Recursive helper. Splits the array in half at each level, then propagates range sums from leaves.
             :param l: The left index of the current halve of the array.
             :param r: The right index of the current halve of the array.
             :return: The root of the segment tree.
             """
-            if l > r:
+            if i > j:
                 return None
-            elif l == r:
-                n = _SegmentTreeNode(l, r)
-                n.total = nums[l]
-                return n
             else:
-                mid = (l + r) // 2
-                root = _SegmentTreeNode(l, r)  # Build out subtree from here
-                root.left, root.right = _build(l, mid), _build(mid + 1, r)
-                root.total = root.left.total + root.right.total  # Sum of leaves under root; range_sum(l, r)
-                return root
+                node = _SegmentTreeNode(i, j)  # Build out subtree from here
+                if i == j:
+                    node.total = nums[i]
+                else:
+                    mid = i + (j - i) // 2
+                    node.left, node.right = build(i, mid), build(mid + 1, j)
+                    node.total = node.left.total + node.right.total  # Sum of leaves under root; range_sum(l, r)
+                return node
 
-        self.root = _build()
+        self.root = build()
 
     def update(self, idx: int, value: int) -> None:
         """
@@ -58,7 +57,7 @@ class SegmentTree:
         :return: The total sum of the nodes underneath the current node.
         """
 
-        def _recurse(root=self.root, i=idx, val=value) -> int:
+        def recurse(node=self.root) -> int:
             """
             Recursively traverses the tree. Once it finds the node to update it propagates the new range sum upwards.
             :param root: The root of the subtree we're searching.
@@ -66,19 +65,18 @@ class SegmentTree:
             :param val: The value we're updating to.
             :return: root.total: The total sum of the nodes beneath root.
             """
-            # Base; actual value is stored in leaf, and total is propagated upwards.
-            if root.start == root.end:
-                root.total = val
-                return root.total
-            mid = (root.start + root.end) // 2
-            if i <= mid:  # Value must be in left subtree
-                _recurse(root.left, i, val)
-            else:  # Value must be in right subtree
-                _recurse(root.right, i, val)
-            root.total = root.left.total + root.right.total
-            return root.total
+            if node.start == node.end:  # Base; actual value is stored in leaf, and total is propagated upwards.
+                node.total = value
+            else:
+                mid = node.start + (node.end - node.start) // 2
+                if idx <= mid:  # Value must be in left subtree
+                    recurse(node.left)
+                else:  # Value must be in right subtree
+                    recurse(node.right)
+                node.total = node.left.total + node.right.total
+            return node.total
 
-        _recurse()
+        recurse()
 
     def range_sum(self, start: int, end: int) -> int:
         """
@@ -88,7 +86,7 @@ class SegmentTree:
         :return: The sum of the range between (start, end) inclusive.
         """
 
-        def _recurse(root=self.root, i=start, j=end) -> int:
+        def _recurse(node=self.root, i=start, j=end) -> int:
             """
             Recursively traverses the tree. Propagates the range sum upwards from the first leaves we encounter.
             :param root: The root of the subtree we're traversing.
@@ -96,16 +94,16 @@ class SegmentTree:
             :param j: The end of the range.
             :return: The range-sum of the subtree we're traversing.
             """
-            if (root.start, root.end) == (i, j):  # Range is contained in this node
-                return root.total
+            if (node.start, node.end) == (i, j):  # Range is contained in this node
+                return node.total
             else:
-                mid = (root.start + root.end) // 2
+                mid = node.start + (node.end - node.start) // 2
                 if j <= mid:  # Range is entirely contained in left subtree
-                    return _recurse(root.left, i, j)
+                    return _recurse(node.left, i, j)
                 elif i >= mid + 1:  # Range is entirely contained in right subtree
-                    return _recurse(root.right, i, j)
+                    return _recurse(node.right, i, j)
                 else:  # Range is in both subtrees
-                    return _recurse(root.left, i, mid) + _recurse(root.right, mid + 1, j)
+                    return _recurse(node.left, i, mid) + _recurse(node.right, mid + 1, j)
 
         return _recurse()
 
